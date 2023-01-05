@@ -3,24 +3,42 @@ import React from 'react';
 import './index.css';
 
 class Square extends React.Component { //child
-    constructor(props) {
+    /**constructor(props) {
         super(props);
         this.state = {
             value: null,
         };
-    }
+    }**/
     render() {
       return (
-        <button className="square" onclick={() => this.setState({value: 'X'})} >
-          {this.state.value}
+        <button className="square" onclick={() => this.props.onClick()} >
+          {this.props.value}
         </button>
       );
     }
   }
   
   class Board extends React.Component { //parent
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null),
+        };
+    }
+
+    handleClick(i){
+        const squares = this.state.squares.slice();
+        squares[i] = 'X';
+        this.setState({squares: squares});
+    }
+
     renderSquare(i) {
-      return <Square value={i}  />;
+        return (
+            <Square
+                value = {this.state.squares[i]}
+                onclick={() => this.handleClick(i)}
+                />
+        );
     }
   
     render() {
@@ -58,7 +76,7 @@ class Square extends React.Component { //child
           </div>
           <div className="game-info">
             <div>{/* status */}</div>
-            <ol>{/* TODO */}</ol>
+             <ol>{/* TODO */}</ol>
           </div>
         </div>
       );
